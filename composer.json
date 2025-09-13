@@ -11,6 +11,13 @@
             "Vendorname\\Skeleton\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vendorname\\Skeleton\\SkeletonServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
