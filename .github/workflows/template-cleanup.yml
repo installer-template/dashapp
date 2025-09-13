@@ -1,0 +1,90 @@
+name: Template Cleanup
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  template-cleanup:
+    if: github.repository != 'inmanturbo/installer-template'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+          
+      - name: Setup variables
+        id: vars
+        run: |
+          # Extract owner and repo name
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          REPO=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+          
+          # Create PascalCase versions
+          OWNER_PASCAL=$(echo "$OWNER" | sed 's/./\U&/')
+          REPO_PASCAL=$(echo "$REPO" | sed -r 's/(^|[-_])([a-z])/\U\2/g' | sed 's/[-_]//g')
+          
+          echo "owner=$OWNER" >> $GITHUB_OUTPUT
+          echo "repo=$REPO" >> $GITHUB_OUTPUT
+          echo "owner_pascal=$OWNER_PASCAL" >> $GITHUB_OUTPUT
+          echo "repo_pascal=$REPO_PASCAL" >> $GITHUB_OUTPUT
+          
+          echo "Repository: $OWNER/$REPO"
+          echo "PascalCase: $OWNER_PASCAL/$REPO_PASCAL"
+          
+      - name: Replace placeholders in files
+        run: |
+          # Replace vendorname/packagename with actual repo
+          find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
+            -not -path "./.git/*" \
+            -exec sed -i "s/vendorname\/skeleton/${{ steps.vars.outputs.owner }}\/${{ steps.vars.outputs.repo }}/g" {} \;
+          
+          find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
+            -not -path "./.git/*" \
+            -exec sed -i "s/vendorname-packagename/${{ steps.vars.outputs.owner }}-${{ steps.vars.outputs.repo }}/g" {} \;
+            
+          # Replace namespace placeholders
+          find . -type f -name "*.php" \
+            -not -path "./.git/*" \
+            -exec sed -i "s/VendorName\\\\Skeleton/${{ steps.vars.outputs.owner_pascal }}\\\\${{ steps.vars.outputs.repo_pascal }}/g" {} \;
+            
+          find . -type f -name "*.php" \
+            -not -path "./.git/*" \
+            -exec sed -i "s/Vendorname\\\\Skeleton/${{ steps.vars.outputs.owner_pascal }}\\\\${{ steps.vars.outputs.repo_pascal }}/g" {} \;
+            
+          # Replace class names
+          find . -type f -name "*.php" \
+            -not -path "./.git/*" \
+            -exec sed -i "s/class Skeleton/class ${{ steps.vars.outputs.repo_pascal }}/g" {} \;
+            
+      - name: Rename files for PSR-4 compliance
+        run: |
+          # Rename PHP files to match new class names
+          if [ -f "src/SkeletonServiceProvider.php" ]; then
+            mv "src/SkeletonServiceProvider.php" "src/${{ steps.vars.outputs.repo_pascal }}ServiceProvider.php"
+          fi
+          
+          # Rename any other Skeleton files
+          find src -name "*Skeleton*" -type f | while read file; do
+            newfile=$(echo "$file" | sed "s/Skeleton/${{ steps.vars.outputs.repo_pascal }}/g")
+            if [ "$file" != "$newfile" ]; then
+              mv "$file" "$newfile"
+            fi
+          done
+          
+      - name: Remove template cleanup workflow
+        run: |
+          rm -f .github/workflows/template-cleanup.yml
+          
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Initialize from template with ${{ github.repository }}"
+            git push
+          fi

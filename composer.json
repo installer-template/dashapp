@@ -1,0 +1,20 @@
+{
+    "name": "vendorname/packagename",
+    "description": ":package_description",
+    "type": "library",
+    "require": {
+        "laravel/pennant": "^1.18"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Vendorname\\Skeleton\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "laravel/pint": "^1.24",
+        "orchestra/testbench": "^10.6"
+    }
+}
