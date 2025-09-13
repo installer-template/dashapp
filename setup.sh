@@ -33,6 +33,10 @@ find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
   -not -path "./.git/*" \
   -exec sed -i "s/vendorname-packagename/$OWNER-$REPO/g" {} \;
 
+find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
+  -not -path "./.git/*" \
+  -exec sed -i "s/packagename/$REPO/g" {} \;
+
 find . -type f -name "*.php" \
   -not -path "./.git/*" \
   -exec sed -i "s/VendorName\\\\Skeleton/$OWNER_PASCAL\\\\$REPO_PASCAL/g" {} \;

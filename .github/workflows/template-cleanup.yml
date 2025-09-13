@@ -47,6 +47,10 @@ jobs:
           find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
             -not -path "./.git/*" \
             -exec sed -i "s/vendorname-packagename/${{ steps.vars.outputs.owner }}-${{ steps.vars.outputs.repo }}/g" {} \;
+          
+          find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
+            -not -path "./.git/*" \
+            -exec sed -i "s/packagename/${{ steps.vars.outputs.repo }}/g" {} \;
             
           # Replace namespace placeholders in PHP files
           find . -type f -name "*.php" \
