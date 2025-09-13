@@ -70,7 +70,7 @@ After setup, customize:
 Once installed in a Laravel project:
 
 ```bash
-php artisan vendorname-packagename:install
+php artisan packagename:install
 ```
 
 This will copy all files from your package's `stubs/` directory to the project root.
