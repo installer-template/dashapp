@@ -48,14 +48,17 @@ jobs:
             -not -path "./.git/*" \
             -exec sed -i "s/vendorname-packagename/${{ steps.vars.outputs.owner }}-${{ steps.vars.outputs.repo }}/g" {} \;
             
-          # Replace namespace placeholders in composer.json and PHP files
-          find . -type f \( -name "*.php" -o -name "*.json" \) \
+          # Replace namespace placeholders in PHP files
+          find . -type f -name "*.php" \
             -not -path "./.git/*" \
             -exec sed -i "s/VendorName\\\\Skeleton/${{ steps.vars.outputs.owner_pascal }}\\\\${{ steps.vars.outputs.repo_pascal }}/g" {} \;
             
-          find . -type f \( -name "*.php" -o -name "*.json" \) \
+          find . -type f -name "*.php" \
             -not -path "./.git/*" \
             -exec sed -i "s/Vendorname\\\\Skeleton/${{ steps.vars.outputs.owner_pascal }}\\\\${{ steps.vars.outputs.repo_pascal }}/g" {} \;
+            
+          # Replace namespace in composer.json (different escaping for JSON)
+          sed -i "s/Vendorname\\\\\\\\Skeleton/${{ steps.vars.outputs.owner_pascal }}\\\\\\\\${{ steps.vars.outputs.repo_pascal }}/g" composer.json
             
           # Replace class names
           find . -type f -name "*.php" \

@@ -33,13 +33,16 @@ find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
   -not -path "./.git/*" \
   -exec sed -i "s/vendorname-packagename/$OWNER-$REPO/g" {} \;
 
-find . -type f \( -name "*.php" -o -name "*.json" \) \
+find . -type f -name "*.php" \
   -not -path "./.git/*" \
   -exec sed -i "s/VendorName\\\\Skeleton/$OWNER_PASCAL\\\\$REPO_PASCAL/g" {} \;
 
-find . -type f \( -name "*.php" -o -name "*.json" \) \
+find . -type f -name "*.php" \
   -not -path "./.git/*" \
   -exec sed -i "s/Vendorname\\\\Skeleton/$OWNER_PASCAL\\\\$REPO_PASCAL/g" {} \;
+
+# Replace namespace in composer.json (different escaping for JSON)
+sed -i "s/Vendorname\\\\\\\\Skeleton/$OWNER_PASCAL\\\\\\\\$REPO_PASCAL/g" composer.json
 
 find . -type f -name "*.php" \
   -not -path "./.git/*" \
