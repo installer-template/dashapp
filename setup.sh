@@ -52,6 +52,11 @@ find . -type f -name "*.php" \
   -not -path "./.git/*" \
   -exec sed -i "s/class Skeleton/class $REPO_PASCAL/g" {} \;
 
+# Replace SkeletonServiceProvider references
+find . -type f \( -name "*.php" -o -name "*.json" \) \
+  -not -path "./.git/*" \
+  -exec sed -i "s/SkeletonServiceProvider/${REPO_PASCAL}ServiceProvider/g" {} \;
+
 # Rename files
 if [ -f "src/SkeletonServiceProvider.php" ]; then
     mv "src/SkeletonServiceProvider.php" "src/${REPO_PASCAL}ServiceProvider.php"

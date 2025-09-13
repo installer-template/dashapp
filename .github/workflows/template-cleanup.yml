@@ -69,6 +69,11 @@ jobs:
             -not -path "./.git/*" \
             -exec sed -i "s/class Skeleton/class ${{ steps.vars.outputs.repo_pascal }}/g" {} \;
             
+          # Replace SkeletonServiceProvider references
+          find . -type f \( -name "*.php" -o -name "*.json" \) \
+            -not -path "./.git/*" \
+            -exec sed -i "s/SkeletonServiceProvider/${{ steps.vars.outputs.repo_pascal }}ServiceProvider/g" {} \;
+            
       - name: Rename files for PSR-4 compliance
         run: |
           # Rename PHP files to match new class names
