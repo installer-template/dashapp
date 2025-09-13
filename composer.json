@@ -1,5 +1,5 @@
 {
-    "name": "vendorname/packagename",
+    "name": "inmanturbo/dashapp",
     "description": ":package_description",
     "type": "library",
     "require": {
@@ -8,13 +8,13 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Vendorname\\Skeleton\\": "src/"
+            "Inmanturbo\\Dashapp\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Vendorname\\Skeleton\\SkeletonServiceProvider"
+                "Inmanturbo\\Dashapp\\DashappServiceProvider"
             ]
         }
     },

@@ -16,7 +16,7 @@ A simple GitHub template for creating Laravel installer packages that publish fi
 1. Click "Use this template" on GitHub
 2. Create your new repository
 3. The GitHub Action will automatically:
-   - Replace `vendorname/skeleton` with your `username/repo`
+   - Replace `inmanturbo/dashapp` with your `username/repo`
    - Replace `Vendorname\Skeleton` namespace with your PascalCase namespace
    - Rename PHP files for PSR-4 compliance
    - Clean up template files
@@ -31,8 +31,8 @@ A simple GitHub template for creating Laravel installer packages that publish fi
 
 ## What Gets Replaced
 
-- `vendorname/skeleton` → your GitHub username/repository
-- `vendorname-packagename` → your username-repository (kebab-case)
+- `inmanturbo/dashapp` → your GitHub username/repository
+- `inmanturbo-dashapp` → your username-repository (kebab-case)
 - `Vendorname\Skeleton` → your PascalCase namespace
 - `SkeletonServiceProvider.php` → `YourPackageServiceProvider.php`
 - Class names updated to match
@@ -70,7 +70,7 @@ After setup, customize:
 Once installed in a Laravel project:
 
 ```bash
-php artisan packagename:install
+php artisan dashapp:install
 ```
 
 This will copy all files from your package's `stubs/` directory to the project root.

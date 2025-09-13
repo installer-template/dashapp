@@ -1,12 +1,12 @@
 <?php
 
-namespace Vendorname\Skeleton;
+namespace Inmanturbo\Dashapp;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
 
-class SkeletonServiceProvider extends ServiceProvider
+class DashappServiceProvider extends ServiceProvider
 {
     public function register()
     {
@@ -17,12 +17,12 @@ class SkeletonServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../stubs' => App::basePath(),
-        ], 'packagename-stubs');
+        ], 'dashapp-stubs');
 
-        Artisan::command('packagename:install', function () {
+        Artisan::command('dashapp:install', function () {
             /** @var \Illuminate\Console\Command $this */
             $this->call('vendor:publish', [
-                '--tag' => 'packagename-stubs',
+                '--tag' => 'dashapp-stubs',
                 '--force' => true,
             ]);
         });
