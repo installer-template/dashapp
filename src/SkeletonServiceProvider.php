@@ -17,12 +17,12 @@ class SkeletonServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../stubs' => App::basePath(),
-        ], 'vendorname-packagename-stubs');
+        ], 'packagename-stubs');
 
-        Artisan::command('vendorname-packagename:install', function () {
+        Artisan::command('packagename:install', function () {
             /** @var \Illuminate\Console\Command $this */
             $this->call('vendor:publish', [
-                '--tag' => 'vendorname-packagename-stubs',
+                '--tag' => 'packagename-stubs',
                 '--force' => true,
             ]);
         });
