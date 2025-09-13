@@ -86,5 +86,16 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Initialize from template with ${{ github.repository }}"
-            git push
+            if git push; then
+              echo "✅ Template setup complete! Changes have been committed."
+            else
+              echo "⚠️ Could not auto-commit changes due to repository permissions."
+              echo "📝 The template has been processed successfully, but you'll need to commit the changes manually:"
+              echo "   git add ."
+              echo "   git commit -m 'Initialize from template'"
+              echo "   git push"
+              echo ""
+              echo "Alternatively, you can run the manual setup script: ./setup.sh ${{ github.repository_owner }}/${{ github.event.repository.name }}"
+              exit 0
+            fi
           fi
