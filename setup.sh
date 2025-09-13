@@ -23,17 +23,21 @@ echo "PascalCase: $OWNER_PASCAL/$REPO_PASCAL"
 # Replace placeholders
 find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
   -not -path "./.git/*" \
+  -exec sed -i "s/vendorname\/packagename/$OWNER\/$REPO/g" {} \;
+
+find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
+  -not -path "./.git/*" \
   -exec sed -i "s/vendorname\/skeleton/$OWNER\/$REPO/g" {} \;
 
 find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
   -not -path "./.git/*" \
   -exec sed -i "s/vendorname-packagename/$OWNER-$REPO/g" {} \;
 
-find . -type f -name "*.php" \
+find . -type f \( -name "*.php" -o -name "*.json" \) \
   -not -path "./.git/*" \
   -exec sed -i "s/VendorName\\\\Skeleton/$OWNER_PASCAL\\\\$REPO_PASCAL/g" {} \;
 
-find . -type f -name "*.php" \
+find . -type f \( -name "*.php" -o -name "*.json" \) \
   -not -path "./.git/*" \
   -exec sed -i "s/Vendorname\\\\Skeleton/$OWNER_PASCAL\\\\$REPO_PASCAL/g" {} \;
 

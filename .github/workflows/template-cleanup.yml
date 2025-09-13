@@ -7,7 +7,7 @@ on:
 
 jobs:
   template-cleanup:
-    if: github.repository != 'inmanturbo/installer-template'
+    if: github.repository != 'installer-template/installer-template'
     runs-on: ubuntu-latest
     
     steps:
@@ -38,18 +38,22 @@ jobs:
           # Replace vendorname/packagename with actual repo
           find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
             -not -path "./.git/*" \
+            -exec sed -i "s/vendorname\/packagename/${{ steps.vars.outputs.owner }}\/${{ steps.vars.outputs.repo }}/g" {} \;
+          
+          find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
+            -not -path "./.git/*" \
             -exec sed -i "s/vendorname\/skeleton/${{ steps.vars.outputs.owner }}\/${{ steps.vars.outputs.repo }}/g" {} \;
           
           find . -type f \( -name "*.php" -o -name "*.json" -o -name "*.md" \) \
             -not -path "./.git/*" \
             -exec sed -i "s/vendorname-packagename/${{ steps.vars.outputs.owner }}-${{ steps.vars.outputs.repo }}/g" {} \;
             
-          # Replace namespace placeholders
-          find . -type f -name "*.php" \
+          # Replace namespace placeholders in composer.json and PHP files
+          find . -type f \( -name "*.php" -o -name "*.json" \) \
             -not -path "./.git/*" \
             -exec sed -i "s/VendorName\\\\Skeleton/${{ steps.vars.outputs.owner_pascal }}\\\\${{ steps.vars.outputs.repo_pascal }}/g" {} \;
             
-          find . -type f -name "*.php" \
+          find . -type f \( -name "*.php" -o -name "*.json" \) \
             -not -path "./.git/*" \
             -exec sed -i "s/Vendorname\\\\Skeleton/${{ steps.vars.outputs.owner_pascal }}\\\\${{ steps.vars.outputs.repo_pascal }}/g" {} \;
             
